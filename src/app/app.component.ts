@@ -6,5 +6,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'udemy-angular-the-complete-guide';
+  visibleFeature: string = 'recipes';
+
+  setVisibleFeature(feature: string) {
+    this.visibleFeature = feature;
+  }
 }
