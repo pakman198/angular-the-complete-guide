@@ -4,6 +4,7 @@ import { Recipe } from './recipe.model';
 @Injectable()
 export class RecipeService {
   selectedRecipe = new EventEmitter<Recipe>();
+  
   private recipes: Recipe[] = [
     new Recipe(
       'Lemon Pepper Chicken', 
