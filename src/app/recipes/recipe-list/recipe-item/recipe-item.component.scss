@@ -1,5 +1,14 @@
-.card:hover {
-    cursor: pointer;
+.list-group-item {
+    padding: 0;
+    
+}
+
+.card {
+    background: transparent;
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .card-img {

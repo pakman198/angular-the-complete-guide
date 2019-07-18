@@ -1,15 +1,13 @@
-<div class="card" (click)="clickHandler()">
-    <div class="row no-gutters">
-        <div class="col-md-8">
-            <div class="card-body">
-                <h5 class="card-title">{{recipe.name}}</h5>
-                <p class="card-text">
-                    {{recipe.description}}
-                </p>
-            </div>
+<div class="row no-gutters">
+    <div class="col-md-8">
+        <div class="card-body">
+            <h5 class="card-title">{{recipe.name}}</h5>
+            <p class="card-text">
+                {{recipe.description}}
+            </p>
         </div>
-        <div class="col-md-4">
-            <img [src]="recipe.imagePath" [alt]="recipe.name" class="card-img">
-        </div>
+    </div>
+    <div class="col-md-4">
+        <img [src]="recipe.imagePath" [alt]="recipe.name" class="card-img">
     </div>
 </div>
