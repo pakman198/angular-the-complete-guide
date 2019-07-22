@@ -4,6 +4,7 @@ import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
 import { RecipeService } from '../recipe.service';
 
 import { map } from 'rxjs/operators';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-recipe-edit',
@@ -11,7 +12,7 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./recipe-edit.component.scss']
 })
 export class RecipeEditComponent implements OnInit {
-  id: number;
+  index: number;
   isEditMode = false;
   recipeForm: FormGroup;
 
@@ -29,7 +30,7 @@ export class RecipeEditComponent implements OnInit {
 
     this.route.params.subscribe(params => {
       console.log(this.route)
-      this.id = +params.id;
+      this.index = +params.id;
       // this.isEditMode = params.edit != null
       this.initForm();
     });
@@ -44,7 +45,7 @@ export class RecipeEditComponent implements OnInit {
     console.log('this.isEditMode', this.isEditMode)
 
     if(this.isEditMode) {
-      const recipe = this.recipeService.getRecipe(this.id);
+      const recipe = this.recipeService.getRecipe(this.index);
       recipeName = recipe.name;
       recipeDescription = recipe.description;
       recipeImagePath = recipe.imagePath; 
@@ -72,6 +73,19 @@ export class RecipeEditComponent implements OnInit {
 
   onSubmit() {
     console.log(this.recipeForm);
+    const { name, description, imagePath, ingredients } = this.recipeForm.value;
+    const newRecipe = new Recipe(
+      name,
+      description,
+      imagePath,
+      ingredients
+    );
+
+    if(this.isEditMode) {
+      this.recipeService.updateRecipe(this.index, newRecipe);
+    } else {
+      this.recipeService.addRecipe(newRecipe);
+    }
   }
 
   onAddIngredient() {
