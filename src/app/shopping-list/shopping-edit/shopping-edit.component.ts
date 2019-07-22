@@ -37,11 +37,19 @@ export class ShoppingEditComponent implements OnInit {
     this.ingredientSubscription.unsubscribe();
   }
 
-  addIngredient() {
+  onFormSubmit() {
     const { name, amount } = this.form.value;
     const ingredient = new Ingredient(name, amount);
 
-    this.shoppingListService.addIngredient(ingredient);
+    if(this.editMode) {
+      this.shoppingListService.updateIngredient(this.currentItemIndex, ingredient);
+    } else {
+      this.shoppingListService.addIngredient(ingredient);
+    }
+
+    this.editMode = false;
+    this.form.reset();
+
   }
 
 }
