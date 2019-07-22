@@ -43,7 +43,7 @@ export class ShoppingListService {
   }
 
   deleteIngredient(index: number) {
-    this.ingredients.splice(index,1);
+    this.ingredients.splice(index, 1);
     const newList = this.ingredients.slice();
 
     this.ingredientsUpdated.next(newList);
