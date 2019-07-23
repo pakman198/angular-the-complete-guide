@@ -20,19 +20,10 @@ export class RecipeEditComponent implements OnInit {
     private router: Router) { }
 
   ngOnInit() {
-    this.route.url.subscribe(segments => {
-      segments.forEach(segment => {
-        console.log({segment})
-        if(segment.path === 'edit') {
-          this.isEditMode = true;
-        }
-      })
-    });
-
     this.route.params.subscribe(params => {
       console.log(this.route)
       this.index = +params.id;
-      // this.isEditMode = params.edit != null
+      this.isEditMode = params.id !== null
       this.initForm();
     });
   }
