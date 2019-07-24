@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { map } from 'rxjs/operators';
+
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
 
@@ -19,6 +21,16 @@ export class DataStorageService {
 
   fetchRecipes() {
     this.http.get<Recipe[]>(`${this.baseUrl}/recipes.json`)
+    .pipe(map(recipes => {
+      // the purpose of this is to check if the recipe has ingredients
+      // otherwise we transform the data 
+     return  recipes.map(recipe => {
+        return {
+          ...recipe,
+          ingredients: recipe.ingredients ? recipe.ingredients : []
+        }
+      })
+    }))
     .subscribe(recipes => {
       console.log({recipes});
       this.recipeService.setRecipes(recipes); 
