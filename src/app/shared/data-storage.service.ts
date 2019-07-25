@@ -24,16 +24,8 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    // the take operator lets me take one observer
-    // and immediately unsubscribe from the observable
-    // exhaustMap creates a new observable
-    return this.authService.user.pipe(
-      take(1),
-      exhaustMap(user => {
-        return this.http.get<Recipe[]>(`${this.baseUrl}/recipes.json?`, {
-          params: new HttpParams().set('auth', user.token)
-        })
-      }),
+    
+    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes.json?`).pipe(
       map(recipes => {
         // the purpose of this is to check if the recipe has ingredients
         // otherwise we transform the data 
