@@ -22,8 +22,6 @@ export class AuthComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log({form});
-
     if(form.invalid) return;
 
     this.isLoading = true;
@@ -33,8 +31,8 @@ export class AuthComponent implements OnInit {
       this.authService.signup(email, password).subscribe(response => {
         console.log({response});
         this.isLoading = false;
-      }, error => {
-        this.error = 'An error occurred';
+      }, errorMessage => {
+        this.error = errorMessage;
         this.isLoading = false;
       });
 
