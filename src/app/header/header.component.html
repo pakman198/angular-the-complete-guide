@@ -4,17 +4,20 @@
         
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item" routerLinkActive="active">
+                <li class="nav-item" routerLinkActive="active" *ngIf="isAuthUser">
                     <a routerLink="/recipes" class="nav-link">Recipes</a>
                 </li>
                 <li class="nav-item" routerLinkActive="active">
                     <a routerLink="/shopping-list" class="nav-link">Shopping List</a>
                 </li>
-                <li class="nav-item" routerLinkActive="active">
+                <li class="nav-item" routerLinkActive="active" *ngIf="!isAuthUser">
                     <a routerLink="/auth" class="nav-link">Authenticate</a>
                 </li>
             </ul>
-            <ul class="navbar-nav mr-5">
+            <ul class="navbar-nav mr-5" *ngIf="isAuthUser">
+                <li class="dropdown-item py-0">
+                    <a class="nav-link">Logout</a>
+                </li>
                 <li class="nav-item dropdown">
                     <a class="dropdown-toggle nav-link" role="button" appDropdown>Manage</a>
                     <ul class="dropdown-menu">

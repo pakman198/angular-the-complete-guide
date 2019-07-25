@@ -1,8 +1,8 @@
 import { Injectable, ɵɵcontainerRefreshEnd } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
-import { throwError } from 'rxjs';
-import { exists } from 'fs';
+import { catchError, tap } from 'rxjs/operators';
+import { throwError, Subject } from 'rxjs';
+import { User } from './user.model';
 
 export interface AuthResponseData {
   kind: string,
@@ -22,6 +22,8 @@ export class AuthService {
   signupUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=";
   loginUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=";
 
+  user = new Subject<User>();
+
   constructor(private http: HttpClient) { }
 
   signup(email: string, password: string) {
@@ -30,15 +32,24 @@ export class AuthService {
       email,
       password,
       returnSecureToken: true 
-    }).pipe( catchError(this.handleError));
+    }).pipe( 
+      catchError( this.handleError ),
+      tap( this.authUser )
+    );
   }
 
   login(email: string, password: string) {
-    return this.http.post<AuthResponseData>(this.signupUrl + this.key, {
+    return this.http.post<AuthResponseData>(this.loginUrl + this.key, {
       email,
       password,
       returnSecureToken: true 
-    }).pipe( catchError(this.handleError) )
+    }).pipe( 
+      catchError( this.handleError ),
+      // The context is lost, in the authUser method, so I use bind
+      // another option is to create anonymous function and change authUser
+      // to receive other parameters this.authUser(...params)
+      tap( this.authUser.bind(this) ),
+    );
   }
 
   private handleError(errorResponse: HttpErrorResponse) {
@@ -61,12 +72,22 @@ export class AuthService {
       case 'INVALID_PASSWORD':
         errorMessage = 'The password is not valid.'
         break;
-        
+
       default: 
         errorMessage = 'An error occurred';
         break;
     }
 
     return throwError(errorMessage);
+  }
+
+  private authUser(responseData: AuthResponseData) {
+    console.log('authUser')
+    const time = new Date().getTime() + +responseData.expiresIn * 1000;
+    const expirationDate = new Date(time);
+    const newUser = new User(responseData.email, responseData.localId, responseData.idToken, expirationDate);
+    console.log(this)
+
+    this.user.next(newUser);
   }
 }
