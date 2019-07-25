@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { map, tap } from 'rxjs/operators';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { map, tap, take, exhaustMap } from 'rxjs/operators';
 
 import { RecipeService } from '../recipes/recipe.service';
 import { Recipe } from '../recipes/recipe.model';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,10 @@ import { Recipe } from '../recipes/recipe.model';
 export class DataStorageService {
   baseUrl = 'https://angular-the-complete-gui-28c38.firebaseio.com';
 
-  constructor(private http: HttpClient, private recipeService: RecipeService) { }
+  constructor(
+    private http: HttpClient, 
+    private recipeService: RecipeService,
+    private authService: AuthService) { }
 
   storeRecipes() {
     const recipes = this.recipeService.getRecipes();
@@ -20,8 +24,16 @@ export class DataStorageService {
   }
 
   fetchRecipes() {
-    return this.http.get<Recipe[]>(`${this.baseUrl}/recipes.json`)
-    .pipe(
+    // the take operator lets me take one observer
+    // and immediately unsubscribe from the observable
+    // exhaustMap creates a new observable
+    return this.authService.user.pipe(
+      take(1),
+      exhaustMap(user => {
+        return this.http.get<Recipe[]>(`${this.baseUrl}/recipes.json?`, {
+          params: new HttpParams().set('auth', user.token)
+        })
+      }),
       map(recipes => {
         // the purpose of this is to check if the recipe has ingredients
         // otherwise we transform the data 
