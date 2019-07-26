@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ComponentFactoryResolver, ViewChild } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { AuthService, AuthResponseData } from './auth.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { Router } from '@angular/router';
+import { AlertComponent } from '../shared/alert/alert.component';
+import { PlaceholderDirective } from '../shared/placeholder.directive';
 
 @Component({
   selector: 'app-auth',
@@ -10,11 +12,15 @@ import { Router } from '@angular/router';
   styleUrls: ['./auth.component.scss']
 })
 export class AuthComponent implements OnInit {
+  @ViewChild(PlaceholderDirective, {static: false}) alertHost: PlaceholderDirective;
   isSignUp = true;
   isLoading = false;
   error = null;
+  private closeSubscription: Subscription;
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, 
+    private router: Router, 
+    private componentFactoryResolver: ComponentFactoryResolver) { }
 
   ngOnInit() {
   }
@@ -43,6 +49,7 @@ export class AuthComponent implements OnInit {
       this.router.navigate(['/recipes'])
     }, errorMessage => {
       this.error = errorMessage;
+      this.showErrorAlert(errorMessage)
       this.isLoading = false;
     });
     
@@ -51,6 +58,20 @@ export class AuthComponent implements OnInit {
 
   onCloseAlert() {
     this.error = null;
+  }
+
+  private showErrorAlert(message: string) {
+    const alertFactory = this.componentFactoryResolver.resolveComponentFactory(AlertComponent);
+    const hostViewContainerRef = this.alertHost.viewContainerRef;
+    hostViewContainerRef.clear();
+
+    // We bind properties and subscribe to events manually
+    const componentRef = hostViewContainerRef.createComponent(alertFactory);
+    componentRef.instance.message = message;
+    this.closeSubscription = componentRef.instance.close.subscribe(() => {
+      this.closeSubscription.unsubscribe();
+      hostViewContainerRef.clear();
+    });
   }
 
 }
