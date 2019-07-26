@@ -45,7 +45,7 @@
             </div>
             <ng-container formArrayName="ingredients">
                 <div
-                    *ngFor="let ing of recipeForm.get('ingredients').controls; let i = index;" 
+                    *ngFor="let ing of ingredientsControls; let i = index;" 
                     class="form-row mb-2" 
                     [formGroupName]="i"
                 >
