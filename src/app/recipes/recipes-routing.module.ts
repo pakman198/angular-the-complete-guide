@@ -9,7 +9,7 @@ import { RecipeResolverService } from './recipe-resolver.service';
 import { AuthGuard } from '../auth/auth-guard';
 
 const routes: Routes = [
-    { path: 'recipes', component: RecipesComponent, canActivate: [AuthGuard], children: [
+    { path: '', component: RecipesComponent, canActivate: [AuthGuard], children: [
         {path: '', component: RecipeStartComponent },
         {path: 'new', component: RecipeEditComponent },
         // dynamic routes should come at the end, otherwise
