@@ -21,7 +21,7 @@ function shoppingListReducer(state = initialState, action: ShoppingListActions.A
                 ]
             }
         default:
-            return initialState;
+            return state;
     }
 }
 
