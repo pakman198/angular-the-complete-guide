@@ -1,5 +1,17 @@
 # UdemyAngularTheCompleteGuide
 
+The project consists on a Recipe Book app, it has 2 features, a shopping list where ingredients are listed, and a recipe list, where recipes are listed.
+
+It uses [firebase](https://firebase.google.com) as backend, it is using authentication to be able to fetch data from firebase.
+The user can create new recipes and save them to the database.
+
+The app was deployed to Heroku: https://udemy-angular-complete-guide.herokuapp.com
+
+You can use this dummy user to test it:
+- User: **admin@mail.com**
+- Pass: **123456**
+
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2.
 
 ## Development server

@@ -44,7 +44,7 @@ export class AuthService {
       returnSecureToken: true 
     }).pipe( 
       catchError( this.handleError ),
-      tap( this.authUser )
+      tap( this.authUser.bind(this) )
     );
   }
 
