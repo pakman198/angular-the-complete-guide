@@ -11,11 +11,7 @@ import { RecipeService } from './recipes/recipe.service';
 import { DataStorageService } from './shared/data-storage.service';
 import { AuthInterceptorService } from './auth/auth-interceptor.service';
 import { SharedModule } from './shared/shared.module';
-import * as fromShoppingListReducer from './shopping-list/store/shopping-list.reducer';
-
-export interface AppState {
-  shoppingList: fromShoppingListReducer.State
-}
+import * as fromApp from './store/app.reducer';
 
 @NgModule({
   declarations: [
@@ -27,9 +23,7 @@ export interface AppState {
     AppRoutingModule,
     HttpClientModule,
     SharedModule,
-    StoreModule.forRoot({
-      shoppingList: fromShoppingListReducer.shoppingListReducer
-    })
+    StoreModule.forRoot(fromApp.appReducer)
   ],
   providers: [
     RecipeService, 
