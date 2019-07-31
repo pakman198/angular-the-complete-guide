@@ -4,7 +4,6 @@ import { Subscription } from 'rxjs';
 import { Store } from '@ngrx/store';
 
 import { Ingredient } from 'src/app/shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list.service';
 import * as ShoppingListActions from '../store/shopping-list.actions';
 import { AppState } from '../../app.module';
 
@@ -16,11 +15,10 @@ import { AppState } from '../../app.module';
 export class ShoppingEditComponent implements OnInit {
   @ViewChild('f', {static: false}) form: NgForm;
 
-  ingredientSubscription: Subscription;
   editMode = false;
   currentIngredient: Ingredient;
 
-  constructor(private shoppingListService: ShoppingListService, private store: Store<AppState>) { }
+  constructor(private store: Store<AppState>) { }
 
   ngOnInit() {
     this.store.select('shoppingList').subscribe(stateData => {
@@ -40,7 +38,6 @@ export class ShoppingEditComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    this.ingredientSubscription.unsubscribe();
     this.store.dispatch(new ShoppingListActions.StopEdit());
   }
 

@@ -4,7 +4,6 @@ import { Store } from '@ngrx/store';
 
 import { Recipe } from './recipe.model';
 import { Ingredient } from '../shared/ingredient.model';
-import { ShoppingListService } from '../shopping-list/shopping-list.service';
 import * as ShoppingListActions from '../shopping-list/store/shopping-list.actions';
 
 @Injectable()
@@ -13,7 +12,7 @@ export class RecipeService {
   recipesUpdated = new Subject<Recipe[]>();
   ingredients: Ingredient[];
 
-  constructor(private shoppingListService: ShoppingListService, private store: Store<{ ingredients: Ingredient[] }>) { }
+  constructor(private store: Store<{ ingredients: Ingredient[] }>) { }
 
   setRecipes(recipes: Recipe[]) {
     this.recipes = recipes;
