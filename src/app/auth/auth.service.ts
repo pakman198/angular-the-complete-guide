@@ -15,7 +15,7 @@ export class AuthService {
   // This method revokes user access once the token duration has expired
   setLogoutTimer(expirationDuration: number) {
     this.tokenExpirationTimer = setTimeout(() => {
-      this.store.dispatch( new AuthActions.AutoLogout() );
+      this.store.dispatch( new AuthActions.Logout() );
     }, expirationDuration)
   }
 

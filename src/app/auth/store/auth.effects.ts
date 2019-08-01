@@ -105,7 +105,7 @@ export class AuthEffects {
             }).pipe( 
                 tap( (resData: AuthResponseData) => {
                     const { expiresIn } = resData;
-                    this.authService.setLogoutTimer(+expiresIn);
+                    this.authService.setLogoutTimer(+expiresIn * 1000);
                 }),
                 map( resData => handleAuthentication(resData) ),
                 catchError( errorResponse =>  handleError(errorResponse) )
@@ -137,7 +137,7 @@ export class AuthEffects {
 
     @Effect({ dispatch: false })
     authLogout = this.actions$.pipe(
-        ofType(AuthActions.AUTO_LOGOUT),
+        ofType(AuthActions.LOGOUT),
         tap(() => {
             localStorage.removeItem('MyApp_userData');
             this.authService.clearLogoutTimer();
@@ -148,7 +148,7 @@ export class AuthEffects {
     @Effect({ dispatch: false})
     authRedirect = this.actions$.pipe( 
         ofType(AuthActions.AUTHENTICATE_SUCCESS),
-        tap(() => this.router.navigate(['/']))
+        tap(() => this.router.navigate(['/recipes']))
     )
 
     constructor(private actions$: Actions, 
