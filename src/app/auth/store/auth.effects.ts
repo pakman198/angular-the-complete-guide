@@ -39,7 +39,7 @@ const handleAuthentication = (resData: AuthResponseData) => {
 
     localStorage.setItem('MyApp_userData', JSON.stringify(newUser));
 
-    return new AuthActions.AuthenticateSuccess(newUser);
+    return new AuthActions.AuthenticateSuccess({user: newUser, redirect: true});
 }
 
 const handleError = (errorResponse: HttpErrorResponse) => {
@@ -128,7 +128,7 @@ export class AuthEffects {
                 const duration = new Date(_tokenExpirationDate).getTime() - new Date().getTime();
                 this.authService.setLogoutTimer(duration);
                 
-                return new AuthActions.AuthenticateSuccess(loadedUser);
+                return new AuthActions.AuthenticateSuccess({user: loadedUser, redirect: false});
             }
 
             return { type: 'DUMMY'};
@@ -148,7 +148,12 @@ export class AuthEffects {
     @Effect({ dispatch: false})
     authRedirect = this.actions$.pipe( 
         ofType(AuthActions.AUTHENTICATE_SUCCESS),
-        tap(() => this.router.navigate(['/recipes']))
+        tap((authSuccessAction: AuthActions.AuthenticateSuccess) =>{
+            const { redirect } = authSuccessAction.payload;
+            if( redirect ) {
+                this.router.navigate(['/recipes'])
+            }
+        })
     )
 
     constructor(private actions$: Actions, 

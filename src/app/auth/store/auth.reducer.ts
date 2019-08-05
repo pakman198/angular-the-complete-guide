@@ -4,13 +4,15 @@ import * as AuthActions from './auth.actions';
 export interface State {
     user: User,
     authError: string,
-    loading: boolean
+    loading: boolean,
+    redirect: boolean
 }
 
 const initialState = {
     user: null,
     authError: null,
-    loading: false
+    loading: false,
+    redirect: false
 }
 
 export function AuthReducer(state = initialState, action: AuthActions.AuthActions) {
@@ -18,9 +20,10 @@ export function AuthReducer(state = initialState, action: AuthActions.AuthAction
         case AuthActions.AUTHENTICATE_SUCCESS:
             return {
                 ...state,
-                user: action.payload,
+                user: action.payload.user,
                 authError: null,
-                loading: false
+                loading: false,
+                redirect: action.payload.redirect
             }
 
         case AuthActions.LOGOUT:
