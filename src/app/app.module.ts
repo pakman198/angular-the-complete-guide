@@ -16,6 +16,7 @@ import * as fromApp from './store/app.reducer';
 import { AuthEffects } from './auth/store/auth.effects';
 import { environment } from 'src/environments/environment';
 import { RecipesEffects } from './recipes/store/recipes.effects';
+import { ServiceWorkerModule } from '@angular/service-worker';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { RecipesEffects } from './recipes/store/recipes.effects';
     StoreModule.forRoot(fromApp.appReducer),
     EffectsModule.forRoot([AuthEffects, RecipesEffects]),
     StoreDevtoolsModule.instrument({ logOnly: environment.production }),
-    StoreRouterConnectingModule.forRoot()
+    StoreRouterConnectingModule.forRoot(),
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptorService, multi: true }
