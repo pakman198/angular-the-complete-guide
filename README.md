@@ -11,6 +11,7 @@ You can use this dummy user to test it:
 - User: **admin@mail.com**
 - Pass: **123456**
 
+To add the PWA functionality basically I had to type: `ng add @angular/pwa` and then it automatically created all the configuration files. After that I only had to deploy whatever is on the `dist/` folder into a server and try to access the site without an internet connection (I emulate the offline functionality on Chrome Dev Tools).
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.2.
 
