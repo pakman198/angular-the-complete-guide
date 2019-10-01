@@ -13,7 +13,7 @@ You can use this dummy user to test it:
 
 To add the PWA functionality basically I had to type: `ng add @angular/pwa` and then it automatically created all the configuration files. After that I only had to deploy whatever is on the `dist/` folder into a server and try to access the site without an internet connection (I emulate the offline functionality on Chrome Dev Tools).
 
-To add SSR (Server-Side Rendering) I had to install `Angular Universal` via npm: `ng add @nguniversal/express-engine --client.Project udemy-angular-the-complete-guide`.
+To add SSR (Server-Side Rendering) I had to install `Angular Universal` via npm: `ng add @nguniversal/express-engine --clientProject udemy-angular-the-complete-guide`.
 There's something to notice in this command and is the text after the `--clientProject` parameter; the clientProject name can be found in the `angular.json` file inside the `projects` property.
 For this project I had to make use of other features, from `@angular/core` and `@angular/common` to do certain stuff depending if the app is being rendered in the server or in the browser (check line 19 of  the app.component file).
 I also had to install `@nguniversal/module-map-ngfactory-loader`.
